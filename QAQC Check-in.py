@@ -3,19 +3,15 @@ import pandas as pd
 import os
 from datetime import datetime
 
-# Define file paths
-attendance_names_path = 'Attendance_Names.csv'
-attendance_record_path = 'Attendance_Record.csv'
-
 # Load attendance names
-attendance_names = pd.read_csv(attendance_names_path)
+attendance_names = pd.read_csv('C:\\Users\\roman\\OneDrive\\Desktop\\Python\\QuickAccessQuickCheck\\Attendance_Names.csv')
 
 # Define the Streamlit app
 def app():
     st.title('Attendance Management Tool')
 
     # Load the attendance record, or create an empty dataframe if it doesn't exist
-    attendance_record = pd.read_csv(attendance_record_path) if os.path.isfile(attendance_record_path) else pd.DataFrame()
+    attendance_record = pd.read_csv('C:\\Users\\roman\\OneDrive\\Desktop\\Python\\QuickAccessQuickCheck\\Attendance_Record.csv') if os.path.isfile('C:\\Users\\roman\\OneDrive\\Desktop\\Python\\QuickAccessQuickCheck\\Attendance_Record.csv') else pd.DataFrame()
 
     # Convert Check-In Time and Check-Out Time columns to datetime objects
     attendance_record['Check-In Time'] = pd.to_datetime(attendance_record['Check-In Time'], errors='coerce')
@@ -68,7 +64,7 @@ def app():
             # Record check-out event
             latest_event_id = user_latest_event['Event ID'].item() + 1 if not user_events.empty else 1
             attendance_record = attendance_record.append({'Name': selected_name, 'QC Team': selected_row['QC Team'], 'Project Role': selected_row['Project Role'], 'Company': selected_row['Company'], 'Event ID': latest_event_id,'Date': datetime.now().strftime('%Y-%m-%d'), 'Check-In Time': user_latest_event['Check-In Time'].item(), 'Check-Out Time': datetime.now()}, ignore_index=True)
-            attendance_record.to_csv(attendance_record_path, index=False)
+            attendance_record.to_csv('C:\\Users\\roman\\OneDrive\\Desktop\\Python\\QuickAccessQuickCheck\\Attendance_Record.csv', index=False)
             st.write('You have checked out.')
     else:
         st.write('You are checked out.')
@@ -77,12 +73,13 @@ def app():
             # Record check-in event
             latest_event_id = user_latest_event['Event ID'].item() + 1 if not user_events.empty else 1
             attendance_record = attendance_record.append({'Name': selected_name, 'QC Team': selected_row['QC Team'], 'Project Role': selected_row['Project Role'], 'Company': selected_row['Company'], 'Event ID': latest_event_id, 'Date': datetime.now().strftime('%Y-%m-%d'), 'Check-In Time': datetime.now(), 'Check-Out Time': pd.NaT}, ignore_index=True)
-            attendance_record.to_csv('Attendance_Record.csv', index=False)
+            attendance_record.to_csv('C:\\Users\\roman\\OneDrive\\Desktop\\Python\\QuickAccessQuickCheck\\Attendance_Record.csv', index=False)
             st.write('You have checked in.')
-
 
 if __name__ == '__main__':
     app()
+
+
 
 
 
